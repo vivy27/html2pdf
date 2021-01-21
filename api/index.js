@@ -11,9 +11,7 @@ router.post('/pdf', async (req, res) => {
             left: '1cm'
         }
     };
-    const file = { url: 'https://www.google.com' };
-
-    console.log('vivi', req)
+    const file = { url: req.body.url || 'https://www.google.com' };
 
     try {
         const pdfBuffer = await convertHTMLToPDF.generatePdf(file, options);
