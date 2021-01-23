@@ -1,9 +1,7 @@
 const puppeteer = require('puppeteer');
-var Promise = require('bluebird');
 const hb = require('handlebars')
 
-module.exports
-async function generatePdf(file, options, callback) {
+async function generatePdf(file, options) {
   // we are using headless mode
   const browser = await puppeteer.launch({
     args: [
@@ -28,12 +26,9 @@ async function generatePdf(file, options, callback) {
     });
   }
 
-  return Promise.props(page.pdf(options))
-    .then(async function(data) {
-       await browser.close();
-
-       return Buffer.from(Object.values(data));
-    }).asCallback(callback);
+  const bufferData = await page.pdf(options);
+  await browser.close();
+  return Buffer.from(Object.values(bufferData));
 }
 
 module.exports.generatePdf = generatePdf;
